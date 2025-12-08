@@ -4,7 +4,7 @@ using namespace std;
 
 class Lock {};
 
-ifstream openFile(const string &ffilename);
+ifstream openFile(string_view ffilename);
 
 void printFileContents(ifstream &ffile);
 
@@ -17,8 +17,8 @@ int main() {
   return 0;
 }
 
-ifstream openFile(const string &ffilename) {
-  ifstream rfile(ffilename);
+ifstream openFile(string_view ffilename) {
+  ifstream rfile(ffilename.data());
   if (!rfile.is_open()) {
     cout << "Failed to open file" << endl;
   }
