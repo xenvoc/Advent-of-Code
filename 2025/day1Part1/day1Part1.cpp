@@ -16,6 +16,7 @@ public:
   void turnDial(string rotation) {
     // make number out of rotation[1...end]
     int count = stoi(rotation.substr(1));
+    cout << rotation << " ";
     if (rotation[0] == 'L')
       rotateLeft(count);
     else
@@ -23,14 +24,14 @@ public:
   }
   void rotateLeft(int count) {
     dial -= count;
-    if (dial < 0)
+    while(dial < 0)
       dial += 100;
     checkIfZeroHit();
   }
 
   void rotateRight(int count) {
     dial += count;
-    if (dial > 99)
+    while(dial > 99)
       dial -= 100;
     checkIfZeroHit();
   }
@@ -47,7 +48,7 @@ ifstream openFile(string_view ffilename);
 void printFileContents(ifstream &ffile);
 
 int main() {
-  string filename = "input_example.txt";
+  string filename = "input.txt";
   ifstream file = openFile(filename);
   assert(file.is_open());
   // North Pole base lock
@@ -76,3 +77,5 @@ void printFileContents(ifstream &ffile) {
     cout << s << endl;
   }
 }
+
+// 1026
