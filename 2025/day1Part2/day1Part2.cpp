@@ -1,3 +1,4 @@
+// just redesign the entire thing: 
 #include <cassert>
 #include <fstream>
 #include <iostream>
@@ -21,45 +22,51 @@ public:
       rotateLeft(count);
     else
       rotateRight(count);
+    cout << dial << endl;
   }
   void rotateLeft(int count) {
-    // hit zero count may be artificially inflated for 1, so pre-adjusting 
-    if (dial == 0 && count > 0 && count < 100) {
-      cout << "pre-adjusting " << count << endl;
-      hitZeroCount--;
-    }
+    countZeroHitsLeft(count);
     dial -= count;
     keepWithin99();
-    checkIfZeroHit();
   }
 
   void rotateRight(int count) {
+    countZeroHitsRight(count);
     dial += count;
     keepWithin99();
-    checkIfZeroHit();
   }
 
-  void checkIfZeroHit() {
-    if (dial == 0)
+  void countZeroHitsLeft(int fcount) {
+    for (int i = 0; i < fcount / 100; i++) {
+      incrementHitZeroCount('h');
+    }
+    if (dial != 0 && dial <= fcount % 100)
       incrementHitZeroCount();
-    cout << dial << endl;
   }
+
+  void countZeroHitsRight(int fcount) {
+    for (int i = 0; i < fcount / 100; i++) {
+      incrementHitZeroCount('h');
+    }
+    if (100 <= dial + (fcount % 100))
+      incrementHitZeroCount();
+  }
+
+
 
   void keepWithin99() {
     while(dial > 99) {
       dial -= 100;
-      if (dial != 0) incrementHitZeroCount();
     }
     while(dial < 0) {
       dial += 100;
-      if (dial != 0)
-        incrementHitZeroCount();
     }
   }
 
-  void incrementHitZeroCount() {
+  void incrementHitZeroCount(char fsign = '+')
+  {
     hitZeroCount++;
-    cout << "+";
+    cout << fsign;
   }
 };
 
@@ -98,7 +105,4 @@ void printFileContents(ifstream &ffile) {
   }
 }
 
-// 6380 too high
-// 5834 too low
-// 6273 too high
-// 5941 incorrect
+// 5923
